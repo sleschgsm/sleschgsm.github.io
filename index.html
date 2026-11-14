@@ -26,6 +26,7 @@
   :root{--bg:#0f171f;--surface:#16212c;--fg:#e6edf3;--muted:#9fb0bf;--line:#26333f;--night:#0a1118;--night-fg:#e8eef3;--ok:#4cc27e;--err:#ef6b5e;color-scheme:dark}
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.6 var(--body)}
 a{color:inherit}
@@ -35,7 +36,7 @@ h2{font-size:clamp(2rem,4.5vw,2.8rem);text-transform:uppercase;letter-spacing:.0
 .eyebrow{font:500 .78rem/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .btn{display:inline-flex;align-items:center;gap:.5em;font:700 1.15rem/1 var(--display);letter-spacing:.04em;text-transform:uppercase;padding:.85em 1.3em;border-radius:6px;border:2px solid transparent;text-decoration:none;cursor:pointer}
 .btn-primary{background:var(--accent);color:var(--accent-ink)}
-.btn-ghost{border-color:currentColor;color:var(--night-fg)}
+.btn-ghost{border-color:currentColor;color:var(--night-fg);background:transparent}
 .btn:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--route);outline-offset:2px}
 
 /* Nagłówek */
@@ -134,6 +135,19 @@ textarea{min-height:150px;resize:vertical}
 .flow span{color:#b9c7d3}
 .order-card{background:var(--surface);color:var(--fg);border-radius:12px;padding:26px;box-shadow:0 30px 60px -36px #000}
 .opt{font-weight:400;color:var(--muted)}
+.ship{display:grid;gap:14px}
+.ship h3{font-size:1.9rem;text-transform:uppercase}
+.ship p{margin:0}
+.ok-line{color:var(--ok);font-weight:700}
+.ship-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.addr{display:grid;gap:8px;align-content:start;padding:16px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.addr p{font-size:1.05rem;line-height:1.5}
+.locker{font:500 1.4rem/1.2 var(--mono);color:var(--fg);letter-spacing:.04em}
+.ship .btn-ghost{color:var(--fg);font-size:.95rem;padding:.6em 1em;justify-self:start}
+.pack{margin:0;padding-left:1.2em;display:grid;gap:6px}
+.after{font-weight:600}
+.mailnote{color:var(--muted);font-size:.9rem}
+@media (max-width:560px){.ship-grid{grid-template-columns:1fr}}
 .consent{grid-column:1/-1;display:flex;gap:12px;align-items:flex-start;font-weight:400;font-size:.9rem;color:var(--muted);cursor:pointer}
 .consent input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--accent);padding:0}
 
@@ -324,6 +338,33 @@ footer .coords{font-family:var(--mono)}
         <span class="status" id="o-status" role="status" aria-live="polite"></span>
       </div>
     </form>
+
+    <div class="order-card ship" id="o-done" hidden>
+      <p class="ok-line">✓ Zgłoszenie dotarło</p>
+      <h3 id="o-done-title">Jak wysłać nawigację</h3>
+      <p id="o-done-intro">Możesz wysłać nawigację od razu, nie musisz czekać na wycenę. Oddzwonię najszybciej, jak się da.</p>
+      <div class="ship-grid">
+        <div class="addr">
+          <span class="eyebrow">Adres do wysyłki</span>
+          <p id="o-addr">SLESCHGPS Beniamin Dziura<br>ul. Włosiankarska 15/37<br>23-400 Biłgoraj</p>
+          <button class="btn btn-ghost copy" type="button" data-copy="SLESCHGPS Beniamin Dziura, ul. Włosiankarska 15/37, 23-400 Biłgoraj">Kopiuj adres</button>
+        </div>
+        <div class="addr">
+          <span class="eyebrow">albo Paczkomat InPost</span>
+          <p><b class="locker">BIL02M</b><br>e‑mail odbiorcy: sleschgsm@wp.pl<br>tel. odbiorcy: 504 789 595</p>
+          <button class="btn btn-ghost copy" type="button" data-copy="BIL02M">Kopiuj kod paczkomatu</button>
+        </div>
+      </div>
+      <span class="eyebrow">Jak zapakować</span>
+      <ul class="pack">
+        <li>Włóż do paczki kartkę przynajmniej z <b>numerem telefonu kontaktowego</b>.</li>
+        <li>Najlepiej wyślij <b>cały komplet</b> (nawigacja, uchwyt, kabel), zależnie od tego, czego dotyczy usterka.</li>
+        <li>Zabezpiecz ekran, np. folią bąbelkową, żeby nic nie latało w pudełku.</li>
+      </ul>
+      <p class="after">Po naprawie odeślę nawigację, a koszt wysyłki doliczę do rachunku.</p>
+      <p class="mailnote" id="o-mailnote" hidden>Tę instrukcję wysłałem też na Twój e‑mail.</p>
+      <button class="btn btn-ghost again" type="button" id="o-again">Wyślij kolejne zgłoszenie</button>
+    </div>
   </div>
 </section>
 
@@ -409,11 +450,28 @@ const ZGLOSZENIA_URL = "https://script.google.com/macros/s/AKfycbxBYGeR00aFhi9MI
   var status = document.getElementById('o-status');
   var btn = document.getElementById('o-send');
   function val(id){ return document.getElementById(id).value.trim(); }
-  function done(){
-    form.reset();
-    status.className = 'status ok';
-    status.textContent = 'Dziękuję! Zgłoszenie dotarło. Oddzwonię z wyceną najszybciej, jak się da.';
+  var box = document.getElementById('o-done');
+  function done(o){
+    var how = (o && o.dostarczenie) || '';
+    var personal = /osobi/i.test(how), unsure = /nie wiem/i.test(how);
+    document.getElementById('o-done-title').textContent = personal ? 'Gdzie przynieść nawigację' : 'Jak wysłać nawigację';
+    document.getElementById('o-done-intro').textContent = personal
+      ? 'Przynieś nawigację na ul. Włosiankarską 15 w Biłgoraju. Pracuję od poniedziałku do niedzieli, w razie pytań zadzwoń: 504 789 595. Jeśli jednak wolisz wysłać, poniżej masz adres i instrukcję.'
+      : (unsure ? 'Oddzwonię najszybciej, jak się da. Jeśli zdecydujesz się wysłać nawigację, możesz to zrobić od razu, nie musisz czekać na wycenę.'
+        : 'Możesz wysłać nawigację od razu, nie musisz czekać na wycenę. Oddzwonię najszybciej, jak się da.');
+    document.getElementById('o-mailnote').hidden = !(o && o.email && o.viaScript);
+    form.reset(); status.textContent = '';
+    form.hidden = true; box.hidden = false;
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+  document.getElementById('o-again').onclick = function(){ box.hidden = true; form.hidden = false; form.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  box.addEventListener('click', function(e){
+    var b = e.target.closest('.copy'); if (!b) return;
+    var t = b.getAttribute('data-copy'), label = b.textContent;
+    var ok = function(){ b.textContent = 'Skopiowano'; setTimeout(function(){ b.textContent = label; }, 1800); };
+    var fail = function(){ var r = document.createRange(); r.selectNodeContents(b.previousElementSibling); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Zaznaczono, skopiuj ręcznie'; setTimeout(function(){ b.textContent = label; }, 2500); };
+    try { navigator.clipboard.writeText(t).then(ok, fail); } catch (err) { fail(); }
+  });
   function viaMail(o){
     return fetch('https://formsubmit.co/ajax/sleschgsm@wp.pl', {
       method: 'POST',
@@ -438,14 +496,14 @@ const ZGLOSZENIA_URL = "https://script.google.com/macros/s/AKfycbxBYGeR00aFhi9MI
     }
     var o = { app: 'SleschGPS-zgloszenie', web: val('o-web'), urzadzenie: val('o-dev'), usterka: val('o-fault'), klient: val('o-name'),
       telefon: val('o-tel'), email: val('o-mail'), dostarczenie: document.getElementById('o-how').value, uwagi: val('o-notes'), zgoda: true };
-    if (o.web) { done(); return; }
+    if (o.web) { done(o); return; }
     btn.disabled = true; btn.textContent = 'Wysyłanie…';
     var first = ZGLOSZENIA_URL
       ? fetch(ZGLOSZENIA_URL, { method: 'POST', body: JSON.stringify(o), redirect: 'follow' })
-          .then(function(r){ return r.json(); }).then(function(j){ if (!j || !j.ok) throw new Error(j && j.error || 'gas'); })
+          .then(function(r){ return r.json(); }).then(function(j){ if (!j || !j.ok) throw new Error(j && j.error || 'gas'); o.viaScript = true; })
       : Promise.reject(new Error('no-url'));
     first.catch(function(){ return viaMail(o); })
-      .then(done)
+      .then(function(){ done(o); })
       .catch(function(){
         status.className = 'status err';
         status.textContent = 'Nie udało się wysłać zgłoszenia. Zadzwoń: 504 789 595.';
