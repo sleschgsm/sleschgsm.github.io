@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SleschGPS Biłgoraj</title>
+<title>Naprawa nawigacji TomTom Biłgoraj – SleschGPS</title>
+<link rel="canonical" href="https://nawigacje-bilgoraj.pl/">
 <meta name="description" content="SleschGPS – naprawa nawigacji TomTom w Biłgoraju: wymiana ekranów LCD i dotyku, ładowanie, brak sygnału GPS, gniazda USB. Naprawa nawigacji innych marek. Kody PIN do radia Ford.">
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
@@ -163,7 +164,99 @@ footer .coords{font-family:var(--mono)}
   header.top nav{display:none}
   form{grid-template-columns:1fr}
 }
+.faults{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.faults a{display:block;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;text-decoration:none;font:700 1.25rem/1.2 var(--display);text-transform:uppercase;letter-spacing:.02em}
+.faults a small{display:block;font:400 .95rem/1.4 var(--body);text-transform:none;letter-spacing:0;color:var(--muted);margin-top:4px}
+.faults a .readmore{display:inline-block;margin-top:10px;font:700 1rem/1 var(--display);letter-spacing:.05em;color:var(--accent);text-decoration:underline;text-underline-offset:4px}
+.faults a:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:820px){.faults{grid-template-columns:1fr}}
 </style>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LocalBusiness",
+ "@id": "https://nawigacje-bilgoraj.pl/#firma",
+ "name": "SleschGPS",
+ "alternateName": "SLESCH Beniamin Dziura",
+ "description": "Naprawa nawigacji TomTom w Biłgoraju: wymiana ekranów LCD i dotyku, ładowanie w uchwycie, brak sygnału GPS, gniazda USB. Naprawa nawigacji innych marek, kody PIN do radia Ford.",
+ "url": "https://nawigacje-bilgoraj.pl/",
+ "telephone": "+48504789595",
+ "email": "sleschgsm@wp.pl",
+ "address": {
+  "@type": "PostalAddress",
+  "streetAddress": "ul. Włosiankarska 15",
+  "postalCode": "23-400",
+  "addressLocality": "Biłgoraj",
+  "addressCountry": "PL"
+ },
+ "geo": {
+  "@type": "GeoCoordinates",
+  "latitude": 50.54,
+  "longitude": 22.72
+ },
+ "areaServed": [
+  {
+   "@type": "City",
+   "name": "Biłgoraj"
+  },
+  {
+   "@type": "Country",
+   "name": "Polska"
+  }
+ ],
+ "sameAs": [
+  "https://www.facebook.com/tomtom.serwis.pogwarancyjny.sleschgps"
+ ],
+ "makesOffer": [
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "Wymiana ekranu TomTom GO Expert",
+    "url": "https://nawigacje-bilgoraj.pl/naprawa-ekranu-tomtom-go-expert.html"
+   }
+  },
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "TomTom nie ładuje w uchwycie",
+    "url": "https://nawigacje-bilgoraj.pl/tomtom-nie-laduje-w-uchwycie.html"
+   }
+  },
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "TomTom GO 6250 nie włącza się?",
+    "url": "https://nawigacje-bilgoraj.pl/tomtom-6250-nie-wlacza-sie.html"
+   }
+  },
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "TomTom nie łapie GPS",
+    "url": "https://nawigacje-bilgoraj.pl/tomtom-brak-sygnalu-gps.html"
+   }
+  },
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "Naprawa nawigacji TomTom Rider"
+   }
+  },
+  {
+   "@type": "Offer",
+   "itemOffered": {
+    "@type": "Service",
+    "name": "Kod PIN do radia Ford"
+   }
+  }
+ ]
+}
+</script>
 </head>
 <body>
 
@@ -264,6 +357,18 @@ footer .coords{font-family:var(--mono)}
         <a class="btn btn-primary" href="#zlec">Zleć naprawę</a>
       </article>
     </div>
+  </div>
+</section>
+
+<section id="usterki" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><h2>Najczęstsze usterki</h2><span class="eyebrow">Objawy · przyczyny · naprawa</span></div>
+    <nav class="faults" aria-label="Najczęstsze usterki">
+      <a href="/naprawa-ekranu-tomtom-go-expert.html">Wymiana ekranu TomTom GO Expert<small>Pęknięta szyba, niedziałający dotyk, pasy na obrazie</small><span class="readmore">Kliknij i przeczytaj więcej →</span></a>
+      <a href="/tomtom-nie-laduje-w-uchwycie.html">TomTom nie ładuje w uchwycie<small>Nie ładuje w uchwycie magnetycznym, uszkodzone gniazdo USB</small><span class="readmore">Kliknij i przeczytaj więcej →</span></a>
+      <a href="/tomtom-6250-nie-wlacza-sie.html">TomTom GO 6250 nie włącza się?<small>GO 520, 620, 6200, 6250: nie włącza się, ekran błędu</small><span class="readmore">Kliknij i przeczytaj więcej →</span></a>
+      <a href="/tomtom-brak-sygnalu-gps.html">TomTom nie łapie GPS<small>Brak pozycji, długie szukanie satelitów</small><span class="readmore">Kliknij i przeczytaj więcej →</span></a>
+    </nav>
   </div>
 </section>
 
@@ -397,7 +502,7 @@ footer .coords{font-family:var(--mono)}
       <input type="hidden" name="_subject" value="Nowa wiadomość ze strony SleschGPS">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://sleschgsm.github.io/#kontakt">
+      <input type="hidden" name="_next" value="https://nawigacje-bilgoraj.pl/#kontakt">
       <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
       <div class="field">
