@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nawigacje-bilgoraj.pl/sitemap.xml
